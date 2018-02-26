@@ -1,13 +1,8 @@
 import test from 'tape';
+import ThrottleStream from '../src/ThrottleStream';
 
-test('timing test', (t) => {
-
-  t.plan(2);
-
-  t.equal(typeof Date.now, 'function');
-  const start = Date.now();
-
-  setTimeout(() => {
-    t.equal(Date.now() - start, 100);
-  }, 100);
+test('should be instantiable', t => {
+  const stream = new ThrottleStream();
+  t.ok(stream, 'instance is truthy');
+  t.end();
 });
