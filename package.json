@@ -4,7 +4,7 @@
   "description": "A nodejs transform stream that throttles",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "yarn tape -r babel-register tests/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,8 @@
   "homepage": "https://github.com/hadrienk/throttle-stream#readme",
   "devDependencies": {
     "babel-core": "^6.26.0",
-    "babel-preset-env": "^1.6.1"
+    "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
+    "tape": "^4.9.0"
   }
 }
