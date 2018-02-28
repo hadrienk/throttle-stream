@@ -20,17 +20,14 @@ export default class ThrottleStream extends PassThrough {
       this.delay = options && options.delay;
       this.timeout = Date.now() + this.delay;
       this.interval = setInterval(() => {
-        if (!this.writing && !this.uncorked && this.hasExpired()) {
+        if (this.hasExpired()) {
           debug('timed out');
           this.uncorkAndIncreaseTimeout();
-          //process.nextTick(() => this.uncorkAndIncreaseTimeout());
         }
       }, this.delay);
     }
-
-    this.writing = false;
     this.uncorked = true;
-
+    this.on('drain', () => debug("drain"));
   }
 
   hasExpired() {
@@ -41,15 +38,8 @@ export default class ThrottleStream extends PassThrough {
   uncorkAndIncreaseTimeout() {
     this.uncorked = true;
     this.timeout = Date.now() + this.delay;
-    if (this.writing) {
-      this.once('drain', () => {
-        debug('uncorked from drain');
-        this.uncork();
-      });
-    } else {
-      debug('uncorked from timeout');
-      this.uncork();
-    }
+    debug('uncork. next timeout %s', this.timeout);
+    this.uncork();
   }
 
   _final(callback) {
@@ -58,28 +48,21 @@ export default class ThrottleStream extends PassThrough {
   }
 
   write(chunk, encoding, cb) {
-
     if (this.uncorked) {
-      debug('corked');
+      debug('cork');
       this.cork();
       this.uncorked = false;
     }
 
-    this.writing = true;
-
-    const proceed = super.write(chunk, encoding);
+    const proceed = super.write(chunk, encoding, cb);
     const expired = this.hasExpired();
-
-    debug('write returned %s, hasExpired %s', proceed, expired);
-
-    if (!proceed) {
+    if (!proceed || expired) {
+      debug('back pressure: %s, timeout %s', proceed, expired);
       process.nextTick(() => {
         this.uncorkAndIncreaseTimeout();
       });
-      this.writing = false;
       return false;
     } else {
-      this.writing = false;
       return true;
     }
   }
