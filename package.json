@@ -4,7 +4,7 @@
   "description": "A nodejs transform stream that throttles",
   "main": "index.js",
   "scripts": {
-    "test": "yarn tape -r babel-register tests/**/*.js"
+    "test": "node $NODE_DEBUG_OPTION \"$(npm bin)/tape\" -r babel-register tests/**/*.js"
   },
   "repository": {
     "type": "git",
@@ -27,5 +27,9 @@
     "babel-preset-env": "^1.6.1",
     "babel-register": "^6.26.0",
     "tape": "^4.9.0"
+  },
+  "dependencies": {
+    "debug": "^3.1.0",
+    "readable-stream": "^2.3.4"
   }
 }
