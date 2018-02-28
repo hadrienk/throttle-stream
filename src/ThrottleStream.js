@@ -8,11 +8,13 @@ export default class ThrottleStream extends PassThrough {
   /**
    * Create a new Throttle stream.
    *
-   * The stream will wait until a certain amount of time has elapsed
-   * or a certain amount of byte/object has gone through it.
+   * The stream will delay writes until a certain amount of time has elapsed
+   * or the highWaterMark has been reached.
    *
-   * Note that this stream will respect the back-pressure of the stream it
-   * is connected to.
+   * The writes will also be stopped according to the back-pressure of the streams
+   * it is connected to.
+   *
+   *
    */
   constructor(options) {
     super(options);
