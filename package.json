@@ -4,8 +4,8 @@
   "description": "A nodejs transform stream that throttles",
   "main": "index.js",
   "scripts": {
-    "coverage": "nyc report --reporter=text-lcov | codecov",
-    "test": "nyc --require babel-register tape tests/**/*.js | tap-spec"
+    "coverage": "codecov -f <(nyc report --reporter=text-lcov )",
+    "test": "nyc --require babel-register tape tests/**/*.js | tap-nyc"
   },
   "repository": {
     "type": "git",
@@ -29,7 +29,7 @@
     "babel-register": "^6.26.0",
     "codecov": "^3.0.0",
     "nyc": "^11.4.1",
-    "tap-spec": "^4.1.1",
+    "tap-nyc": "^1.0.3",
     "tape": "^4.9.0"
   },
   "dependencies": {
