@@ -29,7 +29,7 @@ export default class ThrottleStream extends PassThrough {
       }, this.delay);
     }
     this.uncorked = true;
-    this.on('drain', () => debug("drain"));
+    //this.on('drain', () => debug("drain"));
   }
 
   hasExpired() {
